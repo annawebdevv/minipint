@@ -1,0 +1,20 @@
+.App {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.error {
+    font-size: 12px;
+    color: red;
+}
