@@ -22,8 +22,9 @@ export const ModalWrapper = styled.div<Modal>`
 
 export const ModalContainer = styled.div`
   background-color: white;
-  padding: 30px 20px;
+  padding: 30px 40px;
   border-radius: ${(props) => props.theme.main.br};
   cursor: default;
   width: 70%;
+
 `;

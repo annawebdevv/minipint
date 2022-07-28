@@ -5,6 +5,7 @@ export const theme = {
     colorActive: "rgba(151, 68, 71, 1)",
     br: "10px",
   },
+  
   outline: {
     color: "rgb(120, 120, 120)",
     colorHover: "rgba(27, 34, 27, 0.3)",
