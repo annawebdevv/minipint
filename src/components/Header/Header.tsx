@@ -1,29 +1,28 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import store from "../../store/store";
 
 import { Search } from "./Search/Search";
-import { Button } from "../common/Button/Button";
 import { Modal } from "../common/Modal/Modal";
 import { AddPhotoForm } from "../Forms/AddPhotoForm";
 
-import logo from "./../../utils/logo-pint.png";
-import enter from "./../../utils/enter.png";
-import { Enter, HeaderContainer, Logo, LogoImage, EnterImage } from "./styles";
 import { observer } from "mobx-react-lite";
 import { RegistrationForm } from "../Forms/RegistrationForm";
 import { AuthorizationForm } from "../Forms/AuthorizationForm";
 import { auth } from "../../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
+
+import logo from "./../../utils/logo-pint.png";
+import enter from "./../../utils/enter.png";
+import { Icon } from "../common/Icon/UserIcon";
+
+import { Enter, HeaderContainer, Logo, LogoImage, EnterImage } from "./styles";
 
 export const Header: FC = observer(() => {
-  const [user, setUser] = useState({});
-
-  useEffect(()=>{
+  useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser!);
+      store.setUser(currentUser);
     });
-  },[])
-
+  }, []);
 
   const openModal = () => {
     store.setIsModal(true);
@@ -35,8 +34,10 @@ export const Header: FC = observer(() => {
     if (store.currentModal === "RegistrationForm") return <RegistrationForm />;
     if (store.currentModal === "AddPhotoForm") return <AddPhotoForm />;
   };
-  console.log(user);
 
+  const userClick = () => {
+    store.setIsSideBar(true);
+  };
 
   return (
     <HeaderContainer>
@@ -49,10 +50,13 @@ export const Header: FC = observer(() => {
         <Search />
       </div>
 
-      {user ? (
+
+      {store.user ? (
         <>
-          <Button children="Add a photo" onClick={openModal} />
-          <Button children="log Out" onClick={() => signOut(auth)} />
+          <Icon
+            icon={store.user?.photoURL ? store.user.photoURL : "icon0"}
+            onClick={userClick}
+          />
         </>
       ) : (
         <Enter onClick={openModal}>
@@ -66,8 +70,6 @@ export const Header: FC = observer(() => {
         isModal={store.isModal}
         setModal={store.setIsModal}
       />
-
-      {/* <Modal children={<RegistrationForm />} isModal={store.isModal} setModal={store.setIsModal} /> */}
     </HeaderContainer>
   );
 });

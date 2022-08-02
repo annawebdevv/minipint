@@ -7,27 +7,29 @@ import { ModalContainer, ModalWrapper } from "./styles";
 interface ModalProps {
   children: ReactNode;
   isModal: boolean;
-  setModal: (el:boolean) => void;
+  setModal: (el: boolean) => void;
 }
 
-export const Modal: FC<ModalProps> = observer(({ children, isModal, setModal }) => {
-  const overLayRef = useRef<HTMLDivElement>(null);
-  
+export const Modal: FC<ModalProps> = observer(
+  ({ children, isModal, setModal }) => {
+    const overLayRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayClick: MouseEventHandler<HTMLDivElement> = ({
-    target,
-  }) => {
-    if (target === overLayRef.current) setModal(false);
-  };
+    const handleOverlayClick: MouseEventHandler<HTMLDivElement> = ({
+      target,
+    }) => {
+      if (target === overLayRef.current) setModal(false);
+    };
 
-  return createPortal(
-    <ModalWrapper
-      visible={isModal}
-      ref={overLayRef}
-      onClick={handleOverlayClick}>
-      <ModalContainer>
-        {children}</ModalContainer>
-    </ModalWrapper>,
-    document.body
-  );
-});
+    return createPortal(
+      <ModalWrapper
+        visible={isModal}
+        ref={overLayRef}
+        onClick={handleOverlayClick}>
+
+        <ModalContainer>{children}</ModalContainer>
+        
+      </ModalWrapper>,
+      document.body
+    );
+  }
+);

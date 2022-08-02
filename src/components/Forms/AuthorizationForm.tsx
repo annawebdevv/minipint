@@ -1,4 +1,10 @@
-import { FC, useRef, useEffect, MouseEventHandler, useState } from "react";
+import {
+  FC,
+  useRef,
+  useEffect,
+  MouseEventHandler,
+  useState,
+} from "react";
 import { useInput } from "../../hooks/useInput";
 import store from "../../store/store";
 
@@ -7,7 +13,7 @@ import { Input } from "../common/Input/styles";
 
 import { Link, FormContainer, Label } from "./styles";
 
-import { login, register } from "../../auth";
+import { login } from "../../auth";
 
 export const AuthorizationForm: FC = () => {
   const [hint, setHint] = useState<string | null>(null);
@@ -35,16 +41,22 @@ export const AuthorizationForm: FC = () => {
     store.setCurrentModal("RegistrationForm");
   };
 
-  const handleSubmit: MouseEventHandler<HTMLElement> = () => {
+  const handleSubmit = () => {
     if (!password || !email) {
       setHint("Заполни все поля");
     } else {
-      login(email, password);
+      try {
+        login(email, password, setHint, clearEmail, clearPassword);
+      } catch (e) {
+        console.log("first");
+      }
+    }
+  };
 
-      clearEmail();
-      clearPassword();
-      store.setIsModal(false)
-      store.setCurrentModal("AddPhotoForm");
+  const EnterKeydown = (event: KeyboardEvent) => {
+    const { key } = event;
+    if (key === "Enter") {
+      handleSubmit();
     }
   };
 
@@ -53,10 +65,17 @@ export const AuthorizationForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.isModal]);
 
+  useEffect(() => {
+    window.addEventListener("keydown", EnterKeydown);
+    return () => {
+      window.removeEventListener("keydown", EnterKeydown);
+    };
+  });
+
   return (
     <FormContainer>
       <h3>Authorization</h3>
-      <hr/>
+      <hr />
 
       <Label>
         Email
@@ -73,7 +92,7 @@ export const AuthorizationForm: FC = () => {
         Password
         <Input
           type="password"
-          value={password ? password : " "}
+          value={password ? password : ""}
           onChange={onChangePassword}
           onBlur={onBlurPassword}
         />

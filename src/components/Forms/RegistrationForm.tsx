@@ -35,14 +35,19 @@ export const RegistrationForm: FC = () => {
     store.setCurrentModal("AuthorizationForm");
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> = () => {
+  const handleSubmit= () => {
     if (!password || !email) {
       setHint("Заполни все поля");
     } else {
-      register(email, password);
+      register(email, password, setHint);
 
-      clearEmail();
-      clearPassword();
+    }
+  };
+
+  const EnterKeydown = (event: KeyboardEvent) => {
+    const { key } = event;
+    if (key === "Enter") {
+      handleSubmit();
     }
   };
 
@@ -51,6 +56,12 @@ export const RegistrationForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.isModal]);
 
+  useEffect(() => {
+    window.addEventListener("keydown", EnterKeydown);
+    return () => {
+      window.removeEventListener("keydown", EnterKeydown);
+    };
+  });
   return (
     <FormContainer>
       <h3>Registration </h3>

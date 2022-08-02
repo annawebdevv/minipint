@@ -6,6 +6,7 @@ export const FormContainer = styled.div`
   flex-direction: column;
   gap: 15px;
 `;
+
 export const Label = styled.label`
   display: flex;
   flex-direction: column;
@@ -24,8 +25,9 @@ export const Cancel = styled(Button)`
     background-color: ${(props) => props.theme.outline.colorActive};
   }
 `;
+
 export const Link = styled(Button)`
-font-size: 16px;
+  font-size: 16px;
   background: none;
   color: ${(props) => props.theme.outline.color};
   :hover {
@@ -33,6 +35,6 @@ font-size: 16px;
     text-decoration: underline;
   }
   :active {
-    background: none
+    background: none;
   }
 `;

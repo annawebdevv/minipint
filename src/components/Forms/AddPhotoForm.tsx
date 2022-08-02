@@ -3,14 +3,14 @@ import { FC, useRef, useEffect, MouseEventHandler, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import store from "../../store/store";
 
+import { v4 } from "uuid";
+import { db } from "../../firebase";
+import { set, ref } from "firebase/database";
+
 import { Button } from "../common/Button/Button";
 import { Input } from "../common/Input/styles";
 
 import { Cancel, FormContainer, Label } from "./styles";
-
-import { v4 } from "uuid";
-import { db } from "../../firebase";
-import { set, ref } from "firebase/database";
 
 
 export const AddPhotoForm: FC = observer(() => {
@@ -39,7 +39,7 @@ export const AddPhotoForm: FC = observer(() => {
     store.setIsModal(false);
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> = () => {
+  const addPhoto: MouseEventHandler<HTMLButtonElement> = () => {
     if (!url || !description) {
       setHint("Заполни все поля");
     } else {
@@ -85,7 +85,7 @@ export const AddPhotoForm: FC = observer(() => {
 
       <div className="flex right">
         <Cancel children="Cancel" onClick={handleClickCancel} />
-        <Button children="Submit" onClick={handleSubmit} />
+        <Button children="Submit" onClick={addPhoto} />
       </div>
     </FormContainer>
   );
